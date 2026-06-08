@@ -34,13 +34,16 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        // ✅ Public APIs
+                        // Public APIs
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/timesheets/**").permitAll()
+                        .requestMatchers("/api/invoice/**").permitAll()
+                        .requestMatchers("/api/payment/**").permitAll()
 
-                        // ✅ Users
+                        // Users
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
 
-                        // ✅ Contractors
+                        //Contractors
                         .requestMatchers(HttpMethod.GET, "/api/contractors/**")
                         .hasAnyRole("CONTRACTOR", "HIRING_MANAGER", "VENDOR", "ADMIN")
 
@@ -53,7 +56,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/contractors/**")
                         .hasRole("ADMIN")
 
-                        // ✅ Certifications
+                        // Certifications
                         .requestMatchers(HttpMethod.GET, "/api/certifications/**")
                         .hasAnyRole("CONTRACTOR", "HIRING_MANAGER", "VENDOR", "ADMIN")
 
