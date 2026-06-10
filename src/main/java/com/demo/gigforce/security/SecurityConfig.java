@@ -3,6 +3,7 @@ package com.demo.gigforce.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,7 +18,6 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-    // Constructor Injection (no Lombok)
     public SecurityConfig(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
@@ -26,31 +26,36 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                // ✅ Disable CSRF for APIs
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())
 
+                // ✅ Enable CORS properly
+                .cors(Customizer.withDefaults())
+
+                // ✅ Stateless session (JWT)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                // ✅ Authorization rules
                 .authorizeHttpRequests(auth -> auth
 
-                        // Public APIs
-
+                        // ✅ Swagger (no login needed)
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
                         ).permitAll()
 
+                        // ✅ Public APIs
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/timesheets/**").permitAll()
                         .requestMatchers("/api/invoice/**").permitAll()
                         .requestMatchers("/api/payment/**").permitAll()
 
-                        // Users
+                        // ✅ Users (ADMIN only)
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
 
-                        //Contractors
+                        // ✅ Contractors
                         .requestMatchers(HttpMethod.GET, "/api/contractors/**")
                         .hasAnyRole("CONTRACTOR", "HIRING_MANAGER", "VENDOR", "ADMIN")
 
@@ -63,7 +68,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/contractors/**")
                         .hasRole("ADMIN")
 
-                        // Certifications
+                        .requestMatchers(HttpMethod.POST, "/api/absences/**")
+                        .hasRole("CONTRACTOR")
+
+                        .requestMatchers(HttpMethod.GET, "/api/absences/**")
+                        .hasAnyRole("ADMIN", "HIRING_MANAGER", "CONTRACTOR")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/absences/**")
+                        .hasAnyRole("ADMIN", "HIRING_MANAGER")
+
+                        // ✅ Certifications
                         .requestMatchers(HttpMethod.GET, "/api/certifications/**")
                         .hasAnyRole("CONTRACTOR", "HIRING_MANAGER", "VENDOR", "ADMIN")
 
@@ -76,20 +90,21 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/certifications/**")
                         .hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        // ✅ All remaining APIs require authentication
                         .anyRequest().authenticated()
                 )
 
-
+                // ✅ Disable default login
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .formLogin(form -> form.disable())
 
-
+                // ✅ Add JWT filter
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    // ✅ Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

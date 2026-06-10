@@ -30,4 +30,10 @@ public class TimesheetController {
     public Timesheet get(@PathVariable Long id) {
         return service.getTimesheet(id);
     }
+
+    @PutMapping("/{id}/status")
+    public Timesheet updateStatus(@PathVariable Long id,
+                                  @RequestParam String status) {
+        return service.updateStatus(id, status);
+    }
 }

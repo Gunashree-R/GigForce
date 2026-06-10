@@ -1,13 +1,13 @@
 package com.demo.gigforce.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.demo.gigforce.entity.Invoice;
 import com.demo.gigforce.entity.Payment;
 import com.demo.gigforce.repository.InvoiceRepository;
 import com.demo.gigforce.repository.PaymentRepository;
 import com.demo.gigforce.service.PaymentService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
@@ -23,25 +23,28 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment makePayment(Long invoiceId) {
 
-        // STEP 1: Fetch Invoice
-        Invoice inv = invoiceRepo.findById(invoiceId).orElseThrow();
+        // ✅ STEP 1: Fetch Invoice
+        Invoice inv = invoiceRepo.findById(invoiceId)
+                .orElseThrow(() -> new RuntimeException("Invoice not found"));
 
-        //  STEP 2: Create Payment
+        // ✅ VALIDATION
+        if (!"GENERATED".equalsIgnoreCase(inv.getStatus())) {
+            throw new RuntimeException("Invoice must be GENERATED before payment");
+        }
+
+        // ✅ STEP 2: Create Payment
         Payment payment = new Payment();
         payment.setInvoiceId(invoiceId);
-
-        //  Take amount from invoice
         payment.setAmount(inv.getAmount());
-
         payment.setStatus("PAID");
         payment.setPaymentDate(LocalDate.now());
 
-        //  STEP 3: Save Payment
         return paymentRepo.save(payment);
     }
 
     @Override
     public Payment getPayment(Long id) {
-        return paymentRepo.findById(id).orElseThrow();
+        return paymentRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
     }
 }

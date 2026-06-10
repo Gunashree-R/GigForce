@@ -11,4 +11,6 @@ public interface TimesheetService {
     Timesheet submitTimesheet(Long id);
 
     Timesheet getTimesheet(Long id);
+
+    Timesheet updateStatus(Long id, String status);
 }

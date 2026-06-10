@@ -40,4 +40,17 @@ public class TimesheetServiceImpl implements TimesheetService {
     public Timesheet getTimesheet(Long id) {
         return repository.findById(id).orElseThrow();
     }
+
+    @Override
+    public Timesheet updateStatus(Long id, String status) {
+
+        Timesheet t = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Timesheet not found"));
+
+        // ✅ update status
+        t.setStatus(status);
+
+        // ✅ VERY IMPORTANT → save to DB
+        return repository.save(t);
+    }
 }
