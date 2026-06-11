@@ -7,6 +7,25 @@ Contract & Gig Workforce Management Platform
 
 ***
 
+## Contents
+
+- [1. Overview](#1-overview)
+- [2. Technology Stack](#2-technology-stack)
+- [3. Architecture Overview](#3-architecture-overview)
+- [4. Modules Implemented](#4-modules-implemented)
+- [5. Modules Partially Implemented / Pending Testing](#5-modules-partially-implemented--pending-testing)
+- [6. Authentication & Security](#6-authentication--security)
+- [7. Swagger API Documentation](#7-swagger-api-documentation)
+- [8. API Endpoints](#8-api-endpoints)
+- [9. Role-Based API Access](#9-role-based-api-access)
+- [10. Data Flow](#10-data-flow)
+- [11. Audit Logging](#11-audit-logging)
+- [12. Non-Functional Aspects](#12-non-functional-aspects)
+- [13. Future Enhancements](#13-future-enhancements)
+- [14. Conclusion](#14-conclusion)
+
+***
+
 ## 1. Overview
 
 GigForce is a web-based contract and gig workforce management platform designed to manage the complete lifecycle of freelance, contract, and project-based workforce.
@@ -88,26 +107,72 @@ Features:
 
 ***
 
-### 4.4 Basic Financial & Operational Modules (Partially Accessible)
+### 4.4 Resource Requisition
 
-APIs exposed for:
+Features:
 
-* Timesheets
-* Invoice generation
-* Payments
+* Create and manage requisitions (business unit, skill, dates, rates)
+* Update requisition status (DRAFT, OPEN, IN_PROGRESS, FILLED, CANCELLED)
+
+Entities:
+ResourceRequisition
+
+***
+
+### 4.5 Vendor Submission
+
+Features:
+
+* Vendors submit responses to requisitions
+* Track submission status and attach proposals or rates
+
+Entities:
+VendorSubmission
+
+***
+
+### 4.6 Assignment Management
+
+Features:
+
+* Create and manage assignments linking contractors to requisitions/clients
+* Track assignment lifecycle, start/end dates, and status
+* Terminate or close assignments
+
+Entities:
+Assignment
+
+***
+
+### 4.7 Assignment Amendment
+
+Features:
+
+* Request assignment amendments (role, duration, rate changes)
+* Approve or reject amendments and apply changes to assignments
+
+Entities:
+AssignmentAmendment
+
+***
+
+### 4.8 Timesheet Workflow
+
+Features:
+
+* Submit and manage timesheets for assignments
+* Support submission, review/approval and submission for invoicing
+
+Entities:
+Timesheet
 
 ***
 
 ## 5. Modules Partially Implemented / Pending Testing
 
-* Resource Requisition
-* Vendor Submission
-* Assignment Management
-* Assignment Amendment
-* Timesheet Workflow (partial)
-* Invoice & Payment workflow (basic)
+- Invoice & Payment workflow (basic)
 
-These modules exist but full workflow testing is pending.
+These modules still require deeper end-to-end testing and additional fine tuned features are being added.
 
 ***
 
