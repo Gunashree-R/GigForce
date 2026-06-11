@@ -1,8 +1,11 @@
 package com.demo.gigforce.controller;
 
+import com.demo.gigforce.dto.request.ApprovalRequest;
 import com.demo.gigforce.entity.User;
 import com.demo.gigforce.service.AuditLogService;
 import com.demo.gigforce.service.UserService;
+
+import com.demo.gigforce.enums.ApprovalStatus;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,4 +72,23 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+
+    @PutMapping("/{id}/approvalstatus")
+    public ResponseEntity<User> updateApprovalStatus(
+            @PathVariable Long id,
+            @RequestBody ApprovalRequest request) {
+
+        User user = userService.updateApprovalStatus(id, request.getStatus());
+
+        auditLogService.log(id, request.getStatus().name(), "USER");
+
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<User>> getPendingUsers() {
+        return ResponseEntity.ok(userService.getPendingUsers());
+    }
+
 }

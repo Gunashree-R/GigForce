@@ -8,9 +8,14 @@ import com.demo.gigforce.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.demo.gigforce.enums.ApprovalStatus;
+import com.demo.gigforce.enums.UserRole;
 
 @Service
 public class AuthService {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -30,13 +35,30 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
+
+        // Only check approval status (clean design)
+        if (user.getApprovalStatus() != ApprovalStatus.APPROVED) {
+
+            if (user.getApprovalStatus() == ApprovalStatus.PENDING) {
+                throw new RuntimeException("Approval pending from Admin");
+            }
+
+            if (user.getApprovalStatus() == ApprovalStatus.REJECTED) {
+                throw new RuntimeException("Your account has been rejected");
+            }
+        }
+
+
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
 
         return new AuthResponse(token, user.getRole().name(), user.getEmail());
     }
 
+
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        return userService.createUser(user);
+        //return userRepository.save(user);
     }
+
 }

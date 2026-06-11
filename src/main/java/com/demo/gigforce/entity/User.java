@@ -2,6 +2,8 @@ package com.demo.gigforce.entity;
 
 import com.demo.gigforce.enums.UserRole;
 import com.demo.gigforce.enums.UserStatus;
+import com.demo.gigforce.enums.ApprovalStatus;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -29,6 +31,9 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private ApprovalStatus approvalStatus;
 
     // Constructors
     public User() {}
@@ -74,4 +79,12 @@ public class User {
 
     public UserStatus getStatus() { return status; }
     public void setStatus(UserStatus status) { this.status = status; }
+
+    public ApprovalStatus getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public void setApprovalStatus(ApprovalStatus approvalStatus) {
+        this.approvalStatus = approvalStatus;
+    }
 }
