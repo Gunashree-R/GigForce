@@ -15,13 +15,13 @@ public class TimesheetLineController {
     @Autowired
     private TimesheetLineService service;
 
-    // ✅ Add daily entry
+    // Add daily entry
     @PostMapping
     public TimesheetLine add(@RequestBody TimesheetLine line) {
         return service.addLine(line);
     }
 
-    // ✅ Get all lines for a timesheet
+    // Get all lines for a timesheet
     @GetMapping("/{timesheetId}")
     public List<TimesheetLine> getLines(@PathVariable Long timesheetId) {
         return service.getLinesByTimesheet(timesheetId);
