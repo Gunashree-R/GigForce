@@ -10,7 +10,7 @@ public class TimesheetLine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long lineId;
 
-    // ✅ LINK TO TIMESHEET
+    // LINK TO TIMESHEET
     private Long timesheetId;
 
     private LocalDate date;
@@ -21,7 +21,7 @@ public class TimesheetLine {
 
     private String status; // simple (can convert to enum later)
 
-    // ✅ Getters & Setters
+    // Getters & Setters
 
     public Long getLineId() { return lineId; }
     public void setLineId(Long lineId) { this.lineId = lineId; }
