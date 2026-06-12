@@ -20,7 +20,7 @@ public class TimesheetController {
     }
 
     // Submit Timesheet
-    @PutMapping("/{id}/submit")
+    @PostMapping("/{id}/submit")
     public Timesheet submit(@PathVariable Long id) {
         return service.submitTimesheet(id);
     }
