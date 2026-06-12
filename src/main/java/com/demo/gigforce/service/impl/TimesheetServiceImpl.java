@@ -1,5 +1,6 @@
 package com.demo.gigforce.service.impl;
 
+import com.demo.gigforce.enums.TimesheetStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class TimesheetServiceImpl implements TimesheetService {
     public Timesheet createTimesheet(Timesheet t) {
 
         // Business Logic
-        t.setStatus("DRAFT");
+        t.setStatus(TimesheetStatus.DRAFT);
         t.setSubmittedDate(LocalDate.now());
 
         return repository.save(t);
@@ -30,7 +31,7 @@ public class TimesheetServiceImpl implements TimesheetService {
 
         Timesheet t = repository.findById(id).orElseThrow();
 
-        t.setStatus("SUBMITTED");
+        t.setStatus(TimesheetStatus.SUBMITTED);
         t.setSubmittedDate(LocalDate.now());
 
         return repository.save(t);
@@ -39,5 +40,17 @@ public class TimesheetServiceImpl implements TimesheetService {
     @Override
     public Timesheet getTimesheet(Long id) {
         return repository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Timesheet updateStatus(Long id, String status) {
+
+        Timesheet t = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Timesheet not found"));
+
+        // update status
+        t.setStatus(TimesheetStatus.valueOf(status.toUpperCase()));
+        // VERY IMPORTANT → save to DB
+        return repository.save(t);
     }
 }
