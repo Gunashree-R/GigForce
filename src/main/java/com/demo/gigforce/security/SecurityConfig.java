@@ -43,7 +43,23 @@ public class SecurityConfig {
                         ).permitAll()
 
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/timesheets/**").permitAll()
+
+                        
+                         // TIMESHEET
+
+                        // Contractor → create
+                        .requestMatchers(HttpMethod.POST, "/api/timesheets/**")
+                        .hasAuthority("CONTRACTOR")
+                    
+                        // View
+                        .requestMatchers(HttpMethod.GET, "/api/timesheets/**")
+                        .hasAnyAuthority("CONTRACTOR", "HIRING_MANAGER", "ADMIN")
+                    
+                        // Submit / Approve
+                        .requestMatchers(HttpMethod.PUT, "/api/timesheets/**")
+                        .hasAnyAuthority("CONTRACTOR", "HIRING_MANAGER")
+
+                        //invoice
                         .requestMatchers("/api/invoice/**").permitAll()
                         .requestMatchers("/api/payment/**").permitAll()
 
@@ -62,7 +78,15 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.DELETE, "/api/contractors/**")
                         .hasRole("ADMIN")
+                        // absence
+                        .requestMatchers(HttpMethod.POST, "/api/absences/**")
+                        .hasRole("CONTRACTOR")
 
+                        .requestMatchers(HttpMethod.GET, "/api/absences/**")
+                        .hasAnyRole("ADMIN", "HIRING_MANAGER", "CONTRACTOR")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/absences/**")
+                        .hasAnyRole("ADMIN", "HIRING_MANAGER")
                         // Certifications
                         .requestMatchers(HttpMethod.GET, "/api/certifications/**")
                         .hasAnyRole("CONTRACTOR", "HIRING_MANAGER", "VENDOR", "ADMIN")
