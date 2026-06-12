@@ -57,7 +57,7 @@ public class SecurityConfig {
                     
                         // Submit / Approve
                         .requestMatchers(HttpMethod.PUT, "/api/timesheets/**")
-                        .hasAnyAuthority("CONTRACTOR", "HIRING_MANAGER")
+                        .hasAnyAuthority("HIRING_MANAGER")
 
                         //invoice
                         .requestMatchers("/api/invoice/**").permitAll()
