@@ -1,4 +1,4 @@
 package com.demo.gigforce.service.impl;
 
-public class AbsenceServiceImpl {
+public class TimesheetLineServiceImpl {
 }

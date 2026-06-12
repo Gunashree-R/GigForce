@@ -1,4 +1,4 @@
 package com.demo.gigforce.service;
 
-public class InvoiceService {
+public class TimesheetLineService {
 }

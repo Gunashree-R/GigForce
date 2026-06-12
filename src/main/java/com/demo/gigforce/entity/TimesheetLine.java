@@ -1,4 +1,4 @@
 package com.demo.gigforce.entity;
 
-public class Payment {
+public class TimesheetLine {
 }

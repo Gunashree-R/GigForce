@@ -1,4 +1,4 @@
 package com.demo.gigforce.repository;
 
-public interface AbsenceRepository {
+public class TimesheetLineRepository {
 }

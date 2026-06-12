@@ -1,5 +1,6 @@
 package com.demo.gigforce.entity;
 
+import com.demo.gigforce.enums.TimesheetStatus;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -22,7 +23,8 @@ public class Timesheet {
 
     private LocalDate submittedDate;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TimesheetStatus status;
 
     // ✅ Getters & Setters
 
@@ -50,6 +52,6 @@ public class Timesheet {
     public LocalDate getSubmittedDate() { return submittedDate; }
     public void setSubmittedDate(LocalDate submittedDate) { this.submittedDate = submittedDate; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public TimesheetStatus getStatus() { return status; }
+    public void setStatus(TimesheetStatus status) { this.status = status; }
 }

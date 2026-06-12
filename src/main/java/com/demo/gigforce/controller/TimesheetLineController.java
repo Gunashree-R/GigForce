@@ -1,4 +1,4 @@
 package com.demo.gigforce.controller;
 
-public class InvoiceController {
+public class TimesheetLineController {
 }
