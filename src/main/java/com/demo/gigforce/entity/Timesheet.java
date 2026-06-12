@@ -26,7 +26,7 @@ public class Timesheet {
     @Enumerated(EnumType.STRING)
     private TimesheetStatus status;
 
-    // ✅ Getters & Setters
+    // Getters & Setters
 
     public Long getTimesheetId() { return timesheetId; }
     public void setTimesheetId(Long timesheetId) { this.timesheetId = timesheetId; }
